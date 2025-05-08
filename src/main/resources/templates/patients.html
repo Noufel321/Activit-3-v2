@@ -25,7 +25,7 @@
 
             <div class="card-body">
                 <!-- Formulaire de recherche -->
-                <form method="get" th:action="@{index}" class="row g-2 align-items-center mb-3">
+                <form method="get" th:action="@{/user/index}" class="row g-2 align-items-center mb-3">
                     <div class="col-auto">
                         <label for="keyword" class="form-label mb-0">Mot-clé :</label>
                     </div>
@@ -59,15 +59,15 @@
                             <td th:text="${p.malade}"></td>
                             <td th:text="${p.score}"></td>
                             <td th:text="${p.dateNaissance}"></td>
-                            <td>
-                                <a th:href="@{delete(id=${p.id}, keyword=${keyword}, page=${currentPage})}"
+                            <td th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+                                <a th:href="@{/admin/delete(id=${p.id}, keyword=${keyword}, page=${currentPage})}"
                                    class="btn btn-sm btn-danger"
                                    onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce patient ?')">
                                     <i class="bi bi-trash"></i>
                                 </a>
                             </td>
-                            <td>
-                                <a th:href="@{editPatient(id=${p.id}, keyword=${keyword}, page=${currentPage})}"
+                            <td th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+                                <a th:href="@{/admin/editPatient(id=${p.id}, keyword=${keyword}, page=${currentPage})}"
                                    class="btn btn-success">Edit
                                     <i class="bi bi-trash"></i>
                                 </a>
@@ -81,7 +81,7 @@
                                 <li class="page-item" th:each="page, stat : ${pages}"
                                     th:classappend="${currentPage == stat.index} ? 'active'">
                                     <a class="page-link"
-                                       th:href="@{/index(page=${stat.index}, keyword=${keyword})}"
+                                       th:href="@{/user/index(page=${stat.index}, keyword=${keyword})}"
                                        th:text="${stat.index + 1}"></a>
                                 </li>
                             </ul>
